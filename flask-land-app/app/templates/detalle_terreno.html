@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle del Terreno - {{ propiedad.titulo if propiedad else "Propiedad" }}{% endblock %}
+
+{% block content %}
+<section class="property-details">
+    {% if propiedad %}
+        <h2>{{ propiedad.titulo }}</h2>
+        <h3>DETALLES DEL TERRENO</h3>
+
+            <!-- Galería de Imágenes - Carrusel -->
+        <div class="image-gallery-carousel">
+            <div class="carousel-main-image-container">
+                <img id="carouselMainImage" 
+                     src="{{ url_for('static', filename='Img-prop/' + (imagenes[0].dir_img if imagenes and imagenes[0].dir_img else 'default.png')) }}" 
+                     alt="Imagen de {{ propiedad.titulo }}">
+            </div>
+            {% if imagenes and imagenes|length > 1 %}
+            <button class="carousel-prev" aria-label="Anterior">&#10094;</button>
+            <button class="carousel-next" aria-label="Siguiente">&#10095;</button>
+            {% endif %}
+            <div class="carousel-image-list" style="display:none;">
+                {% for imagen in imagenes %}
+                    <img src="{{ url_for('static', filename='Img-prop/' + imagen.dir_img) }}" alt="Imagen de {{ propiedad.titulo }} - {{ loop.index }}">
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if datos %}
+            <!-- Información de Precio -->
+            {% if datos.precio %}
+            <div class="rental-info">
+                <h3>Precio: {{ datos.precio }} {{ tipo_moneda if tipo_moneda else '' }}</h3>
+            </div>
+            {% endif %}
+
+            <!-- Información Básica -->
+            <div class="basic-info">
+                <h3>Información Básica</h3>
+                <ul>
+                    <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad if propiedad.ciudad else 'No especificada' }}</li>
+                    {% if propiedad.departamento %}
+                    <li><strong>Departamento:</strong> {{ propiedad.departamento }}</li>
+                    {% endif %}
+                    {% if datos.direccion %}
+                    <li><strong>Dirección:</strong> {{ datos.direccion }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Características Adicionales -->
+            <div class="features">
+                <h3>Características Adicionales</h3>
+                <ul>
+                    {% if datos.dimension %}
+                        <li><strong>Dimensión:</strong> {{ datos.dimension }}</li>
+                    {% endif %}
+                    {% if datos.medidas %}
+                        <li><strong>Medidas:</strong> {{ datos.medidas }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Descripción -->
+            <div class="description">
+                <h3>Descripción</h3>
+                <pre class="formatted-description">{{ datos.descripcion if datos.descripcion else 'No hay descripción disponible para esta propiedad.' }}</pre>
+            </div>
+        {% else %}
+            <p>No se encontraron datos específicos para este terreno.</p>
+        {% endif %}
+    {% else %}
+        <p>No se encontraron detalles para esta propiedad.</p>
+    {% endif %}
+</section>
+{% endblock %}
