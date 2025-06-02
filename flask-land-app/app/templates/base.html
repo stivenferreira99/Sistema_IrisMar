@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema IrisMar{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('main.filtrar_propiedades') }}">
+                    <img src="{{ url_for('static', filename='/logoYM.png') }}" alt="Logo de la Empresa">
+            </a>
+        </div>
+        <nav>
+            <a href="{{ url_for('main.index') }}">Inicio</a>
+            <a href="{{ url_for('main.contacto') }}">Contacto</a>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <p>&copy; 2025 Sistema IrisMar. Todos los derechos reservados.</p>
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    </footer>
+</body>
+</html>

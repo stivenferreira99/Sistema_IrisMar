@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="property-details">
+    {% if propiedad %}
+        <h2>{{ propiedad.titulo }}</h2>
+        <h3>IMAGENES DE LA PROPIEDAD</h3>
+
+        <div class="image-gallery-carousel">
+            <div class="carousel-main-image-container">
+                <img id="carouselMainImage" 
+                     src="{{ url_for('static', filename='Img-prop/' + (imagenes[0].dir_img if imagenes and imagenes[0].dir_img else 'default.png')) }}" 
+                     alt="Imagen de {{ propiedad.titulo }}">
+           <div class="carousel-images-wrapper">
+                    {% if imagenes %}
+                        {% for imagen in imagenes %}
+                            <img src="{{ url_for('static', filename='Img-prop/' + imagen.dir_img) }}" alt="Imagen de {{ propiedad.titulo }} - {{ loop.index }}" class="carousel-slide-image">
+                        {% endfor %}
+                    {% else %}
+                        <img src="{{ url_for('static', filename='Img-prop/default.png') }}" alt="Imagen no disponible" class="carousel-slide-image">
+                    {% endif %}
+                </div>
+        </div>
+        {% if imagenes and imagenes|length > 1 %}
+            <button class="carousel-prev" aria-label="Anterior">&#10094;</button>
+            <button class="carousel-next" aria-label="Siguiente">&#10095;</button>
+            {% endif %}
+        <div class="rental-info"><h3>Precio: {{ datos.precio }} {{ tipo_moneda }}</h3></div>
+        
+        <div class="basic-info">
+            <h3>Información Básica</h3>
+            <ul>
+                <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad }}</li>
+                <li><strong>Dimensiones:</strong> {{ datos.dimension }}</li>
+                <li><strong>Medidas:</strong> {{ datos.medidas }} Mts2.</li>
+                <br>
+                <p><strong>Equipado con:</strong></p>
+                <li> <strong>{{ datos.dormitorios }}</strong><strong> Dormitorios</strong></li>
+                <li><strong>{{ datos.baños }}</strong> <strong>Baños</strong></li>
+                {% if datos.niveles %}
+                    <li><strong>{{ datos.niveles }}</strong><strong> Niveles</strong> </li>
+                {% endif %}
+            </ul>
+        </div>
+        <br>
+        
+        <div class="features">
+            <h3>Más Características</h3>
+            <ul>
+                {% if datos.piscina %}
+                    <li><strong>{{ datos.piscina }}</strong></li>
+                {% endif %}
+                {% if datos.quincho %}
+                    <li><strong>{{ datos.quincho }}</strong></li>
+                {% endif %}
+                {% if datos.cochera %}
+                    <li><strong>{{ datos.cochera }}</strong></li>
+                {% endif %}
+            </ul>
+        </div>
+        <br>
+        
+        <div class="description">
+            <h3>Descripción</h3>
+            {% if datos.descripcion %}
+                <pre class="formatted-description">{{ datos.descripcion }}</pre>
+            {% else %}
+                <p>No hay descripción disponible para esta propiedad.</p>
+            {% endif %}
+        </div>
+
+        {# This section was present in the original "casa" template, adapt as needed #}
+        {# <div class="additional-info">
+            <h3>Información Adicional</h3>
+            <ul>
+                <li><strong>Sala:</strong> {{ datos.sala }}</li>
+                <li><strong>Cocina:</strong> {{ datos.cocina }}</li>
+                <li><strong>Lavadero:</strong> {{ datos.lavadero }}</li>
+            </ul>
+        </div> #}
+
+    {% else %}
+        <p>No se encontraron detalles para esta propiedad.</p>
+    {% endif %}
+
+   <!-- Lightbox Structure (inicialmente oculto) -->
+    <div id="myImageLightbox" class="image-lightbox" style="display: none;">
+    <span class="lightbox-close">&times;</span>
+    <div class="image-lightbox-content">
+        <img id="lightboxImg" src="" alt="Imagen Agrandada">
+    </div>
+    </div>
+</section>
+{% endblock %}

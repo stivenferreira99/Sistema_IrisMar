@@ -1,0 +1,762 @@
+/* Body */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Iconos Sociales Fijos */
+.social-icons-fixed {
+    position: fixed; /* Fija los iconos en la pantalla */
+    top: 50%; /* Los posiciona verticalmente en el medio */
+    left: 10px; /* Un pequeño espacio desde el borde izquierdo */
+    transform: translateY(-50%); /* Ajuste fino para centrar verticalmente el bloque de iconos */
+    z-index: 1000; /* Asegura que estén por encima de la mayoría del contenido */
+    display: flex;
+    flex-direction: column; /* Apila los iconos verticalmente */
+    gap: 10px; /* Espacio entre los iconos */
+}
+
+.social-icons-fixed a {
+    display: block; /* Hace que el enlace ocupe el espacio del ícono */
+    width: 40px; /* Ancho del ícono */
+    height: 40px; /* Alto del ícono */
+    background-color: #fff; /* Color de fondo opcional, puedes cambiarlo */
+    border-radius: 5px; /* Bordes ligeramente redondeados para un look cuadrado suave */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra sutil */
+    transition: transform 0.2s ease-in-out;
+    display: flex; /* Para centrar la imagen dentro del 'a' */
+    align-items: center;
+    justify-content: center;
+}
+
+.social-icons-fixed a:hover {
+    transform: scale(1.1); /* Efecto de zoom al pasar el cursor */
+}
+
+.social-icons-fixed img {
+    width: 24px; /* Tamaño de la imagen del ícono dentro del enlace */
+    height: 24px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 2rem;
+    box-shadow: 0 2px 4px rgba(209, 206, 24, 0.1);
+    background-color: #000000;
+
+}
+
+.navbar .logo h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #d6c317e7;
+    font-family: times new roman;
+}
+
+.logo img {
+    width: 200px; /* Ajusta el ancho */
+    height: auto; /* Mantiene la proporción */
+}
+
+nav a {
+    text-decoration: none;
+    color: #EFB810;
+    font-weight: 500;
+    margin-left: 1.5rem;
+}
+
+nav a:hover {
+    color: #EFB810;
+}
+
+/* Hero Section */
+/* Hero Section con fondo de imagen manteniendo el diseño */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    min-height: 400px;
+    background-image: url('../casa.jpg');
+    background-size: cover;
+    background-position: center center;
+    color: white;
+    position: relative;
+    text-align: center;
+  }
+  
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4); /* oscurece la imagen */
+    z-index: 0;
+  }
+  
+  .hero-text {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-text h1 {
+    font-size: 3rem; /* Aumenta el tamaño de la letra */
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8); /* Agrega un borde superfino */
+    color: white;
+    transition: transform 0.3s ease, font-size 0.3s ease;
+
+}
+
+.hero-text p {
+    font-size: 1.5rem; /* Aumenta el tamaño de la letra */
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.8); /* Agrega un borde superfino */
+    color: white;
+    transition: transform 0.3s ease, font-size 0.3s ease;
+
+}
+  
+  .hero-text h1:hover {
+    transform: scale(1.05);
+  }
+  
+  .hero-text p:hover {
+    transform: scale(1.05);
+  }
+  
+
+/* Titulo del filtro*/
+.Titulo_filtro {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: left;
+    margin: 2rem 0;
+    color: #696969;
+}
+
+/* Filtros */
+.filters {
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+}
+
+.filters label {
+    font-weight: 600;
+    display: block; /* Asegura que las etiquetas ocupen su propia línea para mejor espaciado */
+    margin-bottom: 0.5rem;
+    color: #333; /* Color de etiqueta un poco más oscuro para mejor contraste */
+    font-size: 0.9rem; /* Tamaño de fuente ligeramente ajustado para las etiquetas */
+}
+
+
+.filters select,
+.filters input[type="text"],
+.filters input[type="number"],
+.filters input[type="date"],
+.filters input[type="search"]{
+     width: 100%;
+    padding: 0.8rem 1rem; /* Padding ajustado para un look más refinado */
+    margin-bottom: 1rem;
+    border: 1px solid #ddd; /* Borde más suave */
+    border-radius: 6px; /* Bordes ligeramente menos redondeados */
+    box-sizing: border-box; /* Para un manejo consistente del ancho y padding */
+    font-size: 0.95rem;
+    background-color: #fff; /* Fondo blanco para los campos */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+.filters button {
+    width: 100%; /* Botón de ancho completo */
+    padding: 0.9rem 1.5rem; /* Padding generoso para el botón */
+    margin-bottom: 1rem; /* Mantenemos el margen inferior */
+    background-color: #000000;
+    border: none;
+    color: #EFB810;
+    font-weight: 600;
+    font-size: 1rem; /* Tamaño de fuente claro para el botón */
+    cursor: pointer;
+    border-radius: 8px; /* Bordes redondeados consistentes */
+    text-transform: uppercase; /* Texto en mayúsculas para destacar */
+    letter-spacing: 0.5px; /* Ligero espaciado entre letras */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filters button:hover {
+    background-color: #414141;
+    color: #ffffff;
+    transform: translateY(-2px); /* Efecto de elevación sutil */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Sombra mejorada al pasar el cursor */
+ }
+
+/* Estilos para el grupo de filtros de precio */
+.filters .price-filter-group {
+    display: flex; /* Organiza los elementos en línea o como prefieras */
+    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea si no hay espacio */
+    gap: 1.5rem; /* Espacio entre los grupos de label/input/select */
+    align-items: flex-end; /* Alinea los elementos en la parte inferior para mejor apariencia con labels arriba */
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.filters .form-group-inline {
+    display: flex;
+    flex-direction: column; /* Etiqueta encima del input/select */
+}
+
+.filters .form-group-inline label {
+    margin-bottom: 0.5rem; /* Espacio entre etiqueta e input/select */
+    /* Hereda estilos de .filters label */
+}
+
+.filters .price-filter-group input[type="number"],
+.filters .price-filter-group select {
+    width: 130px; /* Ajusta el ancho según necesidad, un poco más de espacio */
+    /* Heredan padding, border, etc., de .filters select, .filters input[type="number"] */
+}
+
+/* Main Footer */
+.main-footer, .footer {
+    background-color: #000000; /* Fondo negro */
+    color: #f0f0f0; /* Texto claro para contraste */
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid #EFB810; /* Borde dorado superior */
+}
+
+.footer { /* Si tienes una clase específica 'footer' para la página de index, también se aplicará */
+    padding: 2rem;
+}
+
+/* Formulario */
+.form-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: .5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Botones */
+.btn-primary {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #3498db;
+}
+
+
+/* Estilo para imágenes en el grid */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 180px);
+    gap: 1rem;
+}
+
+.image-grid img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+/* Cabecera */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.logo a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+}
+
+.property-card .property-city-info {
+    color: black;
+    font-size: 0.8em;
+    text-decoration: none; /* Elimina el subrayado de los enlaces dentro de las tarjetas */
+/* Puedes ajustar este valor si necesitas que sea más pequeño o más grande */
+}
+/* Modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro con transparencia */
+    backdrop-filter: blur(8px); /* Efecto de desenfoque */
+}
+
+.modal-content {
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 16px; /* Bordes redondeados */
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
+    overflow: hidden; /* Asegura que el contenido no se desborde */
+}
+
+.modal-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('../campo-verde.jpg'); /* Imagen de fondo */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5; /* Ajusta la opacidad para oscurecer */
+    filter: brightness(0.5); /* Oscurece la imagen */
+    z-index: -1; /* Envía la capa detrás del contenido */
+}
+
+.modal-content h2 {
+    font-size: 2rem;
+    color: #ffffff; /* Azul oscuro natural */
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.modal-content label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #ffffff; /* Gris oscuro */
+    text-align: left;
+}
+
+.modal-content input {
+    
+    width: 90%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dcdde1; /* Gris claro */
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f9f9f9; /* Fondo claro */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0.5;
+}
+
+.modal-content input:focus {
+    border-color: #27ae60; /* Verde natural */
+    outline: none;
+    box-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+}
+
+.modal-content .btn-primary {
+    background-color: #27ae60; /* Verde natural */
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modal-content .btn-primary:hover {
+    background-color: #2ecc71; /* Verde más claro */
+    transform: scale(1.05); /* Efecto de zoom */
+}
+
+.modal-content p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #ffffff; /* Gris suave */
+}
+
+.modal-content a {
+    color: #27ae60; /* Verde natural */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.modal-content a:hover {
+    color: #2ecc71; /* Verde más claro */
+    text-decoration: underline;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #bdc3c7; /* Gris claro */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-content .close:hover {
+    color: #2c3e50; /* Azul oscuro */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+.flash-messages {
+    margin: 1rem 0;
+}
+
+.flash-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.flash-message.error {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.flash-message.success {
+    background-color: #2ecc71;
+    color: white;
+}
+
+/*imagenes detalles*/
+.property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.property-card {
+    text-align: center;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    transition: transform 0.3s ease;
+    text-decoration: none; /* Elimina el subrayado */
+    color: #2c3e50;
+
+}
+
+.property-card:hover {
+    transform: scale(1.05);
+}
+
+.property-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.property-card h3 {
+    font-size: 1.2rem;
+    color: #2c3e50;
+    text-decoration: none; /* Elimina el subrayado */
+
+}
+
+
+
+
+
+
+
+
+/* DISEÑO DETALLE_CASA*/
+.property-details {
+    max-width: 1200px;
+    margin: 2.5rem auto; /* Aumentado el margen vertical para mejor flujo en la página */
+    font-family: 'Segoe UI', 'Roboto', sans-serif; /* Pila de fuentes moderna y legible */
+    color: #333333; /* Color de texto principal, ligeramente oscuro para buena legibilidad */
+    padding: 2rem;
+    background-color: #ffffff; /* Fondo blanco limpio para el contenedor */
+    border-radius: 16px; /* Esquinas redondeadas más pronunciadas para un look suave */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07); /* Sombra sutil y moderna para dar profundidad */
+}
+
+.property-details h2, .property-details h3 {
+    color: #2c3e50; /* Color oscuro para los encabezados, buen contraste */
+    font-weight: 600; /* Encabezados ligeramente más gruesos */
+}
+
+.property-details h2 {
+    font-size: 2.2rem; /* Título principal de la propiedad más prominente */
+    margin-bottom: 1.75rem; /* Espaciado generoso debajo del título principal */
+}
+
+.property-details h3 {
+    font-size: 1.6rem; /* Títulos de subsección claros */
+    margin-bottom: 1.25rem; /* Buen espaciado para subtítulos */
+}
+
+.property-details p {
+    font-size: 1rem;
+    line-height: 1.7; /* Altura de línea mejorada para la legibilidad de párrafos */
+    margin-bottom: 1rem; /* Espaciado consistente entre párrafos */
+}
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* Espaciado entre imágenes */
+    margin-bottom: 2.5rem; /* Espacio después de la galería */
+}
+
+.image-gallery img {
+    flex-grow: 1; /* Permite que las imágenes crezcan para llenar el espacio */
+    flex-shrink: 1; /* Permite que las imágenes se encojan si es necesario */
+    flex-basis: 280px; /* Ancho base para las imágenes, se ajustarán y envolverán en consecuencia */
+    height: 220px; /* Altura fija para un aspecto uniforme */
+    object-fit: cover; /* Asegura que la imagen cubra el área, recortando si es necesario */
+    border-radius: 12px; /* Esquinas más suaves para las imágenes */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Sombra sutil para dar profundidad */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Efectos de hover suaves */
+}
+
+.image-gallery img:hover {
+    transform: translateY(-5px) scale(1.02); /* Eleva y escala ligeramente la imagen al pasar el cursor */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Sombra mejorada al pasar el cursor */
+}
+
+.property-details ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem; /* Espacio antes de las listas */
+}
+
+.property-details ul li {
+    margin-bottom: 0.9rem; /* Más espacio entre los elementos de la lista */
+    font-size: 1rem;
+    line-height: 1.6; /* Mejor legibilidad para los elementos de la lista */
+    padding-left: 1.5rem; /* Espacio para un posible icono o simplemente indentación */
+    position: relative; /* Para el pseudo-elemento del icono */
+}
+
+/* Opcional: Añadir una viñeta o icono pequeño a los elementos de la lista para un toque moderno */
+.property-details ul li::before {
+    content: "•"; /* Viñeta simple, puede ser reemplazada por un icono SVG o fuente de iconos */
+    position: absolute;
+    left: 0;
+    color: #EFB810; /* Color de acento de la barra de navegación para consistencia */
+    font-weight: bold;
+    font-size: 1.2em; /* Ajustar tamaño de la viñeta */
+}
+
+.property-details ul li strong {
+    color: #2c3e50;
+    font-weight: 700; /* Texto strong más destacado */
+}
+
+
+/* Estilos para el Carrusel de Imágenes */
+.image-gallery-carousel {
+    position: relative;
+    max-width: 900px; /* Ajusta según el diseño deseado */
+    margin: 2rem auto; /* Centra el carrusel */
+    border-radius: 12px;
+    overflow: hidden; /* Para que los bordes redondeados afecten a la imagen */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* MUY IMPORTANTE: Oculta las imágenes que están fuera del viewport del carrusel */
+
+}
+
+.carousel-images-wrapper {
+    display: flex; /* Coloca las imágenes en una fila horizontal */
+    height: 100%; /* Asegura que el wrapper ocupe toda la altura del contenedor */
+    transition: transform 0.5s ease-in-out; /* La animación de deslizamiento! */
+}
+.carousel-main-image-container {
+    width: 100%;
+    height: 500px; /* Altura deseada para la imagen principal, ajusta según necesidad */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e9e9e9; /* Color de fondo mientras carga o si la imagen es pequeña */
+}
+
+#carouselMainImage {
+    max-width: 100%;
+    max-height: 100%;
+    min-width: 100%; /* Cada imagen ocupa el ancho completo del contenedor principal */
+    height: 100%; /* Hace que la imagen intente ocupar toda la altura del contenedor */
+    object-fit: cover;   /* Asegura que toda la imagen sea visible */
+    display: block;
+    cursor: pointer; /* Para indicar que se puede hacer clic (lightbox) */
+    border-radius: 0; /* La imagen no necesita su propio borde si el contenedor ya lo tiene */
+}
+
+.carousel-prev,
+.carousel-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 12px 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    transition: background-color 0.5 ease;
+    border-radius: 50%; /* Botones redondos */
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: none;
+    line-height: 1; /* Para centrar mejor el icono de flecha */
+}
+
+.carousel-next {
+    right: 10px;
+}
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+
+
+.formatted-description {
+    white-space: pre-wrap;   /* Clave: Mantiene los espacios/saltos de línea y permite que el texto se ajuste (wrap) */
+    word-wrap: break-word;     /* Ayuda a romper palabras largas para evitar desbordamiento horizontal */
+    font-family: inherit;      /* Hereda la fuente del elemento padre para consistencia */
+    font-size: inherit;        /* Hereda el tamaño de fuente del padre */
+    margin: 1em 0;             /* Similar al margen de un párrafo normal */
+    padding: 0;                /* Elimina cualquier padding por defecto de <pre> */
+    background-color: transparent; /* Asegura que no haya un fondo por defecto de <pre> */
+    border: none;              /* Asegura que no haya un borde por defecto de <pre> */
+    color: inherit;            /* Hereda el color del texto */
+    line-height: inherit;      /* Hereda la altura de línea */
+}
+
+/* Sección de Contacto Mejorada */
+.contact-info {
+    background-color: #000000; /* Fondo negro como la navbar */
+    padding: 2.5rem 2rem;
+    text-align: center; /* Centrar el título y el párrafo introductorio */
+    border-top: 1px solid #EFB810; /* Borde dorado arriba */
+    border-bottom: 1px solid #EFB810; /* Borde dorado abajo */
+}
+
+.contact-info h2 {
+    font-size: 2rem;
+    color: #EFB810; /* Color oro para el título */
+    margin-bottom: 0.75rem;
+}
+
+.contact-info p {
+    font-size: 1.1rem;
+    color: #f0f0f0; /* Color de texto claro para contraste con fondo negro */
+    margin-bottom: 2rem;
+    max-width: 600px; /* Limita el ancho del párrafo para mejor legibilidad */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-info ul {
+    list-style: none;
+    padding: 0;
+    display: flex; /* Organiza los items en fila */
+    flex-wrap: wrap; /* Permite que los items pasen a la siguiente línea si no caben */
+    justify-content: center; /* Centra los items en la fila */
+    gap: 1.5rem; /* Espacio entre los items de contacto */
+}
+
+.contact-info .contact-item {
+    display: flex; /* Alinea el icono y el texto */
+    align-items: center; /* Centra verticalmente el icono y el texto */
+    background-color: #1a1a1a; /* Un negro un poco más claro o gris muy oscuro para los items */
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(239, 184, 16, 0.2); /* Sombra sutil con tono dorado */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.contact-info .contact-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(239, 184, 16, 0.3); /* Sombra dorada más pronunciada al pasar el cursor */
+}
+
+.contact-info .contact-icon {
+    width: 24px; /* Tamaño del icono */
+    height: 24px;
+    margin-right: 12px; /* Espacio entre el icono y el texto */
+}
+
+.contact-info .contact-text strong {
+    color: #EFB810; /* Color oro para el texto en negrita */
+    margin-right: 0.5em;
+}
+
+.contact-info .contact-text a {
+    text-decoration: none;
+    color: #EFB810; /* Color de tus enlaces */
+    font-weight: 500;
+}
+
+.contact-info .contact-text a:hover {
+    text-decoration: underline;
+}
