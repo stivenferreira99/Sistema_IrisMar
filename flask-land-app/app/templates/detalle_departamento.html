@@ -1,9 +1,10 @@
+<!-- Plantilla independiente para detalle de departamento, sin herencia de base.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de Quinta</title>
+    <title>Detalle de Departamento</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body class="index-bg">
@@ -33,7 +34,7 @@
         <section class="property-details">
             {% if propiedad %}
                 <h2>{{ propiedad.titulo }}</h2>
-                <h3>IMAGENES DE LA PROPIEDAD</h3>
+                <h3>DETALLES DEL DEPARTAMENTO</h3>
                 <div class="image-gallery-carousel">
                     <div class="carousel-main-image-container">
                         <img id="carouselMainImage" 
@@ -50,45 +51,33 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="rental-info"><h3>Precio: {{ datos.precio }} {{ tipo_moneda }}</h3></div>
-                <div class="basic-info">
-                    <h3>Información Básica</h3>
-                    <ul>
-                        <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad }}</li>
-                        <li><strong>Dimensiones:</strong> {{ datos.dimension }}</li>
-                        <li><strong>Medidas:</strong> {{ datos.medidas }}</li>
-                        <li><strong>Dormitorios:</strong> {{ datos.dormitorios }} Dormitorios</li>
-                        <li><strong>Baños:</strong> {{ datos.baños }}</li>
-                        {% if datos.niveles %}
-                            <li><strong>Niveles:</strong> {{ datos.niveles }}</li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="features">
-                    <h3>Características</h3>
-                    <ul >
-                        {% if datos.piscina %}
-                            <li><strong>Piscina:</strong> {{ datos.piscina }}</li>
-                        {% endif %}
-                        {% if datos.quincho %}
-                            <li><strong>Quincho:</strong> {{ datos.quincho }}</li>
-                        {% endif %}
-                        {% if datos.cochera %}
-                            <li><strong>Cochera:</strong> {{ datos.cochera }}</li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <br>
-                <div class="description">
-                    <h3>Descripción</h3>
-                    {% if datos.descripcion %}
-                        <pre class="formatted-description">{{ datos.descripcion if datos.descripcion else 'No hay descripción disponible para esta propiedad.' }}</pre>
-                    {% else %}
-                        <p>No hay descripción disponible para esta propiedad.</p>
+                {% if datos %}
+                    {% if datos.precio %}
+                        <div class="rental-info">
+                            <h3>Precio: {{ datos.precio }} {{ tipo_moneda if tipo_moneda else '' }}</h3>
+                        </div>
                     {% endif %}
-                </div>
+                    <div class="basic-info">
+                        <h3>Información Básica</h3>
+                        <ul>
+                            <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad if propiedad.ciudad else 'No especificada' }}</li>
+                            {% if propiedad.departamento %}
+                                <li><strong>Departamento:</strong> {{ propiedad.departamento }}</li>
+                            {% endif %}
+                            {% if datos.direccion %}
+                                <li><strong>Dirección:</strong> {{ datos.direccion }}</li>
+                            {% endif %}
+                            {% if datos.dormitorios is not none %}
+                                <li><strong>Dormitorios:</strong> {{ datos.dormitorios }}</li>
+                            {% endif %}
+                            {% if datos.baños is not none %}
+                                <li><strong>Baños:</strong> {{ datos.baños }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
             {% else %}
-                <p>No se encontraron detalles para esta propiedad.</p>
+                <p>No se encontró la propiedad.</p>
             {% endif %}
         </section>
     </main>

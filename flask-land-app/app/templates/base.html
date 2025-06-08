@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,28 +7,33 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <!-- Header -->
-    <header class="navbar">
-        <div class="logo">
-            <a href="{{ url_for('main.filtrar_propiedades') }}">
-                    <img src="{{ url_for('static', filename='/logoYM.png') }}" alt="Logo de la Empresa">
-            </a>
-        </div>
+    <header>
         <nav>
-            <a href="{{ url_for('main.index') }}">Inicio</a>
-            <a href="{{ url_for('main.contacto') }}">Contacto</a>
+            <a href="{{ url_for('main.filtrar_propiedades') }}">Inicio</a>
+            {#
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('main.inicio') }}">Panel</a>
+                <a href="{{ url_for('main.logout') }}">Cerrar sesión</a>
+            {% else %}
+                <a href="{{ url_for('main.iniciar_sesion') }}">Iniciar sesión</a>
+            {% endif %}
+            #}
         </nav>
     </header>
-
-    <!-- Contenido Principal -->
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div id="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </main>
-
-    <!-- Footer -->
-    <footer class="main-footer">
-        <p>&copy; 2025 Sistema IrisMar. Todos los derechos reservados.</p>
-        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <footer>
+        <p>&copy; 2025 IrisMar</p>
     </footer>
 </body>
 </html>

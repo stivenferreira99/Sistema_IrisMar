@@ -1,72 +1,137 @@
-{% extends "base.html" %}
-
-{% block title %}Detalle del Departamento - {{ propiedad.titulo if propiedad else "Propiedad" }}{% endblock %}
-
-{% block content %}
-<section class="property-details">
-    {% if propiedad %}
-        <h2>{{ propiedad.titulo }}</h2>
-        <h3>DETALLES DEL DEPARTAMENTO</h3>
-
-       <!-- Galería de Imágenes - Carrusel -->
-        <div class="image-gallery-carousel">
-            <div class="carousel-main-image-container">
-                <img id="carouselMainImage" 
-                     src="{{ url_for('static', filename='Img-prop/' + (imagenes[0].dir_img if imagenes and imagenes[0].dir_img else 'default.png')) }}" 
-                     alt="Imagen de {{ propiedad.titulo }}">
-            </div>
-            {% if imagenes and imagenes|length > 1 %}
-            <button class="carousel-prev" aria-label="Anterior">&#10094;</button>
-            <button class="carousel-next" aria-label="Siguiente">&#10095;</button>
-            {% endif %}
-            <div class="carousel-image-list" style="display:none;">
-                {% for imagen in imagenes %}
-                    <img src="{{ url_for('static', filename='Img-prop/' + imagen.dir_img) }}" alt="Imagen de {{ propiedad.titulo }} - {{ loop.index }}">
-                {% endfor %}
-            </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Depósito</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="index-bg">
+    <header class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('main.filtrar_propiedades') }}">
+                <img src="{{ url_for('static', filename='/logoYM.png') }}" alt="Logo de la Empresa">
+            </a>
         </div>
-        {% if datos %}
-            <!-- Información de Precio -->
-            {% if datos.precio %}
-            <div class="rental-info">
-                <h3>Precio: {{ datos.precio }} {{ tipo_moneda if tipo_moneda else '' }}</h3>
-            </div>
+        <nav>
+            <a href="{{ url_for('main.index') }}">Inicio</a>
+            <a href="{{ url_for('main.contacto') }}">Contacto</a>
+        </nav>
+    </header>
+    <div class="social-icons-fixed">
+        <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank" aria-label="WhatsApp">
+            <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp"> 
+        </a>
+        <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank" aria-label="Instagram">
+            <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram">
+        </a>
+        <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank" aria-label="Facebook">
+            <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook">
+        </a>
+    </div>
+    <main>
+        <section class="property-details">
+            {% if propiedad %}
+                <h2>{{ propiedad.titulo }}</h2>
+                <h3>DETALLES DEL DEPARTAMENTO</h3>
+
+               <!-- Galería de Imágenes - Carrusel -->
+                <div class="image-gallery-carousel">
+                    <div class="carousel-main-image-container">
+                        <img id="carouselMainImage" 
+                             src="{{ url_for('static', filename='Img-prop/' + (imagenes[0].dir_img if imagenes and imagenes[0].dir_img else 'default.png')) }}" 
+                             alt="Imagen de {{ propiedad.titulo }}">
+                    </div>
+                    {% if imagenes and imagenes|length > 1 %}
+                    <button class="carousel-prev" aria-label="Anterior">&#10094;</button>
+                    <button class="carousel-next" aria-label="Siguiente">&#10095;</button>
+                    {% endif %}
+                    <div class="carousel-image-list" style="display:none;">
+                        {% for imagen in imagenes %}
+                            <img src="{{ url_for('static', filename='Img-prop/' + imagen.dir_img) }}" alt="Imagen de {{ propiedad.titulo }} - {{ loop.index }}">
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if datos %}
+                    <!-- Información de Precio -->
+                    {% if datos.precio %}
+                    <div class="rental-info">
+                        <h3>Precio: {{ datos.precio }} {{ tipo_moneda if tipo_moneda else '' }}</h3>
+                    </div>
+                    {% endif %}
+
+                    <!-- Información Básica -->
+                    <div class="basic-info">
+                        <h3>Información Básica</h3>
+                        <ul>
+                            <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad if propiedad.ciudad else 'No especificada' }}</li>
+                            {% if propiedad.departamento %}
+                            <li><strong>Departamento:</strong> {{ propiedad.departamento }}</li>
+                            {% endif %}
+                            {% if datos.direccion %}
+                            <li><strong>Dirección:</strong> {{ datos.direccion }}</li>
+                            {% endif %}
+                            {% if datos.dormitorios is not none %}
+                                <li><strong>Dormitorios:</strong> {{ datos.dormitorios }}</li>
+                            {% endif %}
+                            {% if datos.baños is not none %}
+                                <li><strong>Baños:</strong> {{ datos.baños }}</li>
+                            {% endif %}
+                            {% if datos.superficie_total %}
+                                <li><strong>Superficie Total:</strong> {{ datos.superficie_total }} m²</li>
+                            {% endif %}
+                            {# Agrega aquí más campos específicos de datos_departamentos #}
+                        </ul>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="description">
+                        <h3>Descripción</h3>
+                        <pre class="formatted-description">{{ datos.descripcion if datos.descripcion else 'No hay descripción disponible para esta propiedad.' }}</pre>
+                    </div>
+                {% else %}
+                    <p>No se encontraron datos específicos para este departamento.</p>
+                {% endif %}
+            {% else %}
+                <p>No se encontraron detalles para esta propiedad.</p>
             {% endif %}
-
-            <!-- Información Básica -->
-            <div class="basic-info">
-                <h3>Información Básica</h3>
-                <ul>
-                    <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad if propiedad.ciudad else 'No especificada' }}</li>
-                    {% if propiedad.departamento %}
-                    <li><strong>Departamento:</strong> {{ propiedad.departamento }}</li>
-                    {% endif %}
-                    {% if datos.direccion %}
-                    <li><strong>Dirección:</strong> {{ datos.direccion }}</li>
-                    {% endif %}
-                    {% if datos.dormitorios is not none %}
-                        <li><strong>Dormitorios:</strong> {{ datos.dormitorios }}</li>
-                    {% endif %}
-                    {% if datos.baños is not none %}
-                        <li><strong>Baños:</strong> {{ datos.baños }}</li>
-                    {% endif %}
-                    {% if datos.superficie_total %}
-                        <li><strong>Superficie Total:</strong> {{ datos.superficie_total }} m²</li>
-                    {% endif %}
-                    {# Agrega aquí más campos específicos de datos_departamentos #}
-                </ul>
-            </div>
-
-            <!-- Descripción -->
-            <div class="description">
-                <h3>Descripción</h3>
-                <pre class="formatted-description">{{ datos.descripcion if datos.descripcion else 'No hay descripción disponible para esta propiedad.' }}</pre>
-            </div>
-        {% else %}
-            <p>No se encontraron datos específicos para este departamento.</p>
-        {% endif %}
-    {% else %}
-        <p>No se encontraron detalles para esta propiedad.</p>
-    {% endif %}
-</section>
-{% endblock %}
+        </section>
+    </main>
+    <section class="contact-info" id="contacto">
+        <h2>Contactos</h2>
+        <p>¿Tienes preguntas o deseas más información? Contáctanos a través de nuestros canales:</p>
+        <ul>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>WhatsApp:</strong> <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank">Enviar mensaje</a>
+                </div>
+            </li>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>Instagram:</strong> <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank">@irismar_florentin</a>
+                </div>
+            </li>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank">Irismar Propiedades</a>
+                </div>
+            </li>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/gmail.png') }}" alt="Email Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>Correo Electrónico:</strong> <a href="mailto:irismar@prueba.com">irismar@prueba.com</a>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <footer class="footer" style="margin-top:0;">
+        <div class="container">
+            <p>&copy; 2025 IrismMar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
