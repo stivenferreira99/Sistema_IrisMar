@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for,session
 from sqlalchemy.sql import text
+from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+
+from functools import wraps
 from flask import current_app
 
 
@@ -8,7 +11,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return filtrar_propiedades()
+    return redirect(url_for('main.filtrar_propiedades'))
+
 @main.route('/filtrar_propiedades', methods=['GET'])
 def filtrar_propiedades():
     # Parámetros de filtro existentes
@@ -164,66 +168,82 @@ def filtrar_propiedades():
                            )
 
 
+
+
+
+
+##INICIO DE SESIÓN Y REGISTRO
+
+def login_required(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Debes iniciar sesión.', 'warning')
+            return redirect(url_for('main.iniciar_sesion'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @main.route('/iniciar_sesion', methods=['GET', 'POST'])
 def iniciar_sesion():
     if request.method == 'POST':
-        nombre_usuario = request.form.get('nombre_usuario')
-        contrasena = request.form.get('contrasena')
-        try:
-            usuario = db.session.execute(
-                text('SELECT * FROM Usuario WHERE nombre_usuario = :nombre_usuario AND contrasena = :contrasena'),
-                {'nombre_usuario': nombre_usuario, 'contrasena': contrasena}
-            ).fetchone()
-            if usuario:
-                flash('Inicio de sesión exitoso!', 'success')
-            else:
-                flash('Usuario o contraseña inválidos.', 'danger')
-        except Exception as e:
-            print(f"Error durante el inicio de sesión: {e}")
-            flash('Ocurrió un error. Por favor, inténtalo de nuevo.', 'danger')
+        username = request.form['nombre_usuario']
+        password = request.form['contrasena']
+        usuario = db.session.execute(
+            text('SELECT id, nombre_usuario, contrasena, rol, activo, Nombre FROM usuario WHERE nombre_usuario = :username'),
+            {'username': username}
+        ).mappings().fetchone()
+        if usuario and usuario['activo'] and check_password_hash(usuario['contrasena'], password):
+            session['user_id'] = usuario['id']
+            session['username'] = usuario['nombre_usuario']
+            session['rol'] = usuario['rol']
+            session['nombre'] = usuario['Nombre']  # Guarda el nombre real
+            flash(f'¡Bienvenido {usuario["Nombre"]}!', 'success')
+            return redirect(url_for('main.inicio'))
+        elif usuario and not usuario['activo']:
+            flash('Tu usuario está inactivo. Contacta al administrador.', 'danger')
+        else:
+            flash('Usuario o contraseña incorrectos.', 'danger')
     return render_template('login.html')
 
-from flask import flash
+@main.route('/inicio')
+def inicio():
+    if 'user_id' not in session:
+        flash('Debes iniciar sesión.', 'warning')
+        return redirect(url_for('main.iniciar_sesion'))
+    return render_template('inicio.html')
 
 
-@main.route('/registrarse', methods=['GET', 'POST'])
-def registrarse():
-    if request.method == 'POST':
-        nombre_usuario = request.form.get('nombre_usuario')
-        correo_electronico = request.form.get('correo_electronico')
-        celular = request.form.get('celular')
-        contrasena = request.form.get('contrasena')
-        confirmar_contrasena = request.form.get('confirmar_contrasena')
+@main.route('/logout')
+def logout():
+    session.clear()
+    flash('Sesión cerrada.', 'success')
+    return redirect(url_for('main.filtrar_propiedades'))
 
-        # Validar que las contraseñas coincidan
-        if contrasena != confirmar_contrasena:
-            flash('Las contraseñas no coinciden.', 'danger')
-            return render_template('register.html')
 
-        # Validar que el nombre de usuario no exista
-        usuario_existente = db.session.execute(
-            text('SELECT * FROM Usuario WHERE nombre_usuario = :nombre_usuario'),
-            {'nombre_usuario': nombre_usuario}
-        ).fetchone()
 
-        if usuario_existente:
-            flash('Este usuario ya se encuentra registrado.', 'danger')
-            return render_template('register.html')
 
-        try:
-            rol = "Comercial"
-            db.session.execute(
-                text('INSERT INTO Usuario (nombre_usuario, correo_electronico, celular, contrasena, rol) VALUES (:nombre_usuario, :correo_electronico, :celular, :contrasena, :rol)'),
-                {'nombre_usuario': nombre_usuario, 'correo_electronico': correo_electronico, 'celular': celular, 'contrasena': contrasena, 'rol': rol}
-            )
-            db.session.commit()
-            flash('Registro exitoso! Ahora puedes iniciar sesión.', 'success')
-            return redirect(url_for('main.iniciar_sesion'))
-        except Exception as e:
-            print(f"Error durante el registro: {e}")
-            flash('El registro falló. Por favor, inténtalo de nuevo.', 'danger')
 
-    return render_template('register.html')
+
+
+def rol_required(rol):
+    def decorator(f):
+        from functools import wraps
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if session.get('rol') != rol:
+                flash('No tienes permiso para acceder.', 'danger')
+                return redirect(url_for('main.index'))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+@main.route('/cargar_propiedad', methods=['GET', 'POST'])
+@login_required
+@rol_required('Comercial')  # O el rol que corresponda
+def cargar_propiedad():
+    # lógica de carga
+    return render_template('cargar_propiedad.html')
 
 @main.route('/contacto', methods=['GET'])
 def contacto():
@@ -262,8 +282,11 @@ def detalle_propiedad(id):
                 p.descripcion, 
                 p.tipo_propiedad,
                 c.nombre AS ciudad,
+                d.nombre AS departamento,
                 p.moneda_id  # Asegúrate de que tu tabla Propiedad tenga esta columna
-            FROM Propiedad p INNER JOIN ciudad c ON p.ciudad_id = c.id
+            FROM Propiedad p 
+            INNER JOIN ciudad c ON p.ciudad_id = c.id
+            INNER JOIN departamento d ON c.departamento_id = d.id
             WHERE p.id = :id
         '''),
         {'id': id}

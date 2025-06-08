@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
- // --- Carousel and Lightbox Logic ---
+
+    // --- Carousel and Lightbox Logic ---
     const carouselElement = document.querySelector('.image-gallery-carousel');
     if (carouselElement) {
         const mainImageElement = document.getElementById('carouselMainImage');
@@ -116,33 +117,3 @@ document.addEventListener('DOMContentLoaded', function() {
     } // Fin de if (carouselElement)
 });
 
-// Funciones de modal (sin cambios)
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'block';
-    }
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-    }
-}
-
-function switchModal(currentModalId, targetModalId) {
-    closeModal(currentModalId);
-    openModal(targetModalId);
-}
-
-window.onclick = function(event) {
-    const loginModal = document.getElementById('loginModal');
-    const registerModal = document.getElementById('registerModal');
-    if (loginModal && event.target === loginModal) {
-        loginModal.style.display = 'none';
-    }
-    if (registerModal && event.target === registerModal) {
-        registerModal.style.display = 'none';
-    }
-};
