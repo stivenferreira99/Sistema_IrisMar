@@ -1,0 +1,162 @@
+<!-- Plantilla independiente para detalle de casa, sin herencia de base.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Casa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="index-bg">
+    <header class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('main.filtrar_propiedades') }}">
+                <img src="{{ url_for('static', filename='/logoYM.png') }}" alt="Logo de la Empresa">
+            </a>
+        </div>
+        <nav>
+            <a href="{{ url_for('main.index') }}">Inicio</a>
+            <a href="{{ url_for('main.contacto') }}">Contacto</a>
+        </nav>
+    </header>
+    <div class="social-icons-fixed">
+        <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank" aria-label="WhatsApp">
+            <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp"> 
+        </a>
+        <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank" aria-label="Instagram">
+            <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram">
+        </a>
+        <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank" aria-label="Facebook">
+            <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook">
+        </a>
+    </div>
+    <main>
+        <section class="property-details">
+            {% if propiedad %}
+                <h2>{{ propiedad.titulo }}</h2>
+                <h3>IMAGENES DE LA PROPIEDAD</h3>
+
+                <div class="image-gallery-carousel">
+                    <div class="carousel-main-image-container">
+                        <img id="carouselMainImage" 
+                             src="{{ url_for('static', filename='Img-prop/' + (imagenes[0].dir_img if imagenes and imagenes[0].dir_img else 'default.png')) }}" 
+                             alt="Imagen de {{ propiedad.titulo }}">
+                    <div class="carousel-images-wrapper">
+                            {% if imagenes %}
+                                {% for imagen in imagenes %}
+                                    <img src="{{ url_for('static', filename='Img-prop/' + imagen.dir_img) }}" alt="Imagen de {{ propiedad.titulo }} - {{ loop.index }}" class="carousel-slide-image">
+                                {% endfor %}
+                            {% else %}
+                                <img src="{{ url_for('static', filename='Img-prop/default.png') }}" alt="Imagen no disponible" class="carousel-slide-image">
+                            {% endif %}
+                        </div>
+                </div>
+                {% if imagenes and imagenes|length > 1 %}
+                    <button class="carousel-prev" aria-label="Anterior">&#10094;</button>
+                    <button class="carousel-next" aria-label="Siguiente">&#10095;</button>
+                {% endif %}
+                <div class="rental-info"><h3>Precio: {{ datos.precio }} {{ tipo_moneda }}</h3></div>
+                
+                <div class="basic-info">
+                    <h3>Información Básica</h3>
+                    <ul>
+                        <li><strong>Ubicado en la ciudad de:</strong> {{ propiedad.ciudad }}</li>
+                        <li><strong>Dimensiones:</strong> {{ datos.dimension }}</li>
+                        <li><strong>Medidas:</strong> {{ datos.medidas }} Mts2.</li>
+                        <br>
+                        <p><strong>Equipado con:</strong></p>
+                        <li> <strong>{{ datos.dormitorios }}</strong><strong> Dormitorios</strong></li>
+                        <li><strong>{{ datos.baños }}</strong> <strong>Baños</strong></li>
+                        {% if datos.niveles %}
+                            <li><strong>{{ datos.niveles }}</strong><strong> Niveles</strong> </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <br>
+                
+                <div class="features">
+                    <h3>Más Características</h3>
+                    <ul>
+                        {% if datos.piscina %}
+                            <li><strong>Piscina:</strong> {{ datos.piscina }}</li>
+                        {% endif %}
+                        {% if datos.quincho %}
+                            <li><strong>{{ datos.quincho }}</strong></li>
+                        {% endif %}
+                        {% if datos.cochera %}
+                            <li><strong>{{ datos.cochera }}</strong></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <br>
+                
+                <div class="description">
+                    <h3>Descripción</h3>
+                    {% if datos.descripcion %}
+                        <pre class="formatted-description">{{ datos.descripcion }}</pre>
+                    {% else %}
+                        <p>No hay descripción disponible para esta propiedad.</p>
+                    {% endif %}
+                </div>
+
+                {# This section was present in the original "casa" template, adapt as needed #}
+                {# <div class="additional-info">
+                    <h3>Información Adicional</h3>
+                    <ul>
+                        <li><strong>Sala:</strong> {{ datos.sala }}</li>
+                        <li><strong>Cocina:</strong> {{ datos.cocina }}</li>
+                        <li><strong>Lavadero:</strong> {{ datos.lavadero }}</li>
+                    </ul>
+                </div> #}
+
+            {% else %}
+                <p>No se encontraron detalles para esta propiedad.</p>
+            {% endif %}
+
+           <!-- Lightbox Structure (inicialmente oculto) -->
+            <div id="myImageLightbox" class="image-lightbox" style="display: none;">
+            <span class="lightbox-close">&times;</span>
+            <div class="image-lightbox-content">
+                <img id="lightboxImg" src="" alt="Imagen Agrandada">
+            </div>
+            </div>
+        </section>
+    </main>
+    <section class="contact-info" id="contacto">
+        <h2>Contactos</h2>
+        <p>¿Tienes preguntas o deseas más información? Contáctanos a través de nuestros canales:</p>
+        <ul>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>WhatsApp:</strong> <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank">Enviar mensaje</a>
+                </div>
+            </li>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>Instagram:</strong> <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank">@irismar_florentin</a>
+                </div>
+            </li>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank">Irismar Propiedades</a>
+                </div>
+            </li>
+            <li class="contact-item">
+                <img src="{{ url_for('static', filename='iconos/gmail.png') }}" alt="Email Icon" class="contact-icon">
+                <div class="contact-text">
+                    <strong>Correo Electrónico:</strong> <a href="mailto:irismar@prueba.com">irismar@prueba.com</a>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <footer class="footer" style="margin-top:0;">
+        <div class="container">
+            <p>&copy; 2025 IrismMar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

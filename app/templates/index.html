@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtro de Propiedades - Mi Empresa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="index-bg">
+    <!-- Cabecera -->
+   <!-- Cabecera -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('main.filtrar_propiedades') }}">
+                <img src="{{ url_for('static', filename='/logoYM.png') }}" alt="Logo de la Empresa">
+            </a>
+        </div>
+        <nav>
+            <a href="{{ url_for('main.index') }}">Inicio</a>
+              <a href="{{ url_for('main.contacto') }}">Contacto</a>
+            <!--{% if session.get('user_id') %}
+                <span>Bienvenido, {{ session.get('username') }}</span>
+                <a href="{{ url_for('main.logout') }}">Cerrar sesión</a>
+                {% if session.get('rol') == 'Comercial' %}
+                    <a href="{{ url_for('main.cargar_propiedad') }}">Cargar Propiedad</a>
+                {% endif %}
+            {% else %}
+                <a href="{{ url_for('main.iniciar_sesion') }}">Iniciar Sesión</a>
+                <a href="{{ url_for('main.contacto') }}">Contacto</a>
+            {% endif %}-->
+            
+        </nav>
+    </header>
+     <!-- Iconos Sociales Fijos -->
+    <div class="social-icons-fixed">
+        <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank" aria-label="WhatsApp">
+            <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp"> 
+        </a>
+        <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank" aria-label="Instagram">
+            <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram">
+        </a>
+        <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank" aria-label="Facebook">
+            <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook">
+        </a>
+    </div>
+
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Encuentra la propiedad de tus sueños</h1>
+            <p>Explora terrenos, casas, departamentos.</p>
+        </div>
+    </section>
+
+
+    <div class ="Titulo_filtro">
+      <h1>Propiedades Disponibles</h1>
+    </div>
+
+    <section class="filters" id="filter-section"> <!-- Añadido id para el scroll y corregido el tag anidado -->
+        <form action="{{ url_for('main.filtrar_propiedades') }}" method="GET"> <!-- Este es el único form para los filtros -->
+            <!-- Selector de tipo de filtro -->
+            <label for="filtro">Filtrar Principalmente por:</label>
+            <select name="filtro" id="filtro" onchange="this.form.submit()">
+                <option value="">-- Todos --</option>
+                <option value="departamento" {% if filtro and filtro == 'departamento' %}selected{% endif %}>Departamento y Ciudad</option>
+                <option value="ciudad" {% if filtro and filtro == 'ciudad' %}selected{% endif %}>Solo Ciudad (Todas)</option>
+            </select>
+
+            <!-- Filtro por Departamento -->
+            {# Mostrar el filtro de departamento solo si no se ha seleccionado "Solo Ciudad (Todas)" en el filtro principal #}
+            {% if filtro != 'ciudad' %}
+                <div>
+                    <label for="departamento_id">Departamento:</label>
+                    <select name="departamento_id" id="departamento_id" onchange="this.form.submit()">
+                        <option value="">-- Todos los Departamentos --</option>
+                        {% for departamento in departamentos %}
+                            <option value="{{ departamento.id }}" {% if departamento_id and departamento_id == departamento.id|string %}selected{% endif %}>
+                                {{ departamento.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+
+            <!-- Filtro por Ciudad (se mostrarán todas o las del departamento seleccionado) -->
+            <div>
+                <label for="ciudad_id">Ciudad:</label>
+                <select name="ciudad_id" id="ciudad_id" onchange="this.form.submit()">
+                    <option value="">-- Todas las Ciudades --</option>
+                    {# La lista 'ciudades' ya viene filtrada desde el backend si un departamento está activo,
+                       o contiene todas las ciudades. Cada ciudad_obj debería tener 'departamento_nombre'. #}
+                    {% for ciudad_obj in ciudades %}
+                        <option value="{{ ciudad_obj.id }}" {% if ciudad_id and ciudad_id == ciudad_obj.id|string %}selected{% endif %}>
+                            {{ ciudad_obj.nombre }}
+                            {# Mostrar el nombre del departamento solo si no hay un departamento ya seleccionado en el filtro principal #}
+                            {% if not departamento_id and ciudad_obj.departamento_nombre %}
+                                ({{ ciudad_obj.departamento_nombre }})
+                            {% endif %}
+                            </option>
+                        {% endfor %}
+                </select>
+            </div>
+
+            <!-- Filtro por tipo de operación -->
+            <label for="tipo_operacion">Tipo de Operación:</label>
+            <select name="tipo_operacion" id="tipo_operacion" onchange="this.form.submit()">
+                <option value="indistinto" {% if tipo_operacion and tipo_operacion == 'indistinto' %}selected{% endif %}>Indistinto</option>
+                <option value="venta" {% if tipo_operacion and tipo_operacion == 'venta' %}selected{% endif %}>Venta</option>
+                <option value="alquiler" {% if tipo_operacion and tipo_operacion == 'alquiler' %}selected{% endif %}>Alquiler</option>
+            </select>
+
+            <!-- Filtro por tipo de propiedad -->
+            <label for="tipo_propiedad">Tipo de Propiedad:</label>
+            <select name="tipo_propiedad" id="tipo_propiedad" onchange="this.form.submit()">
+                <option value="indistinto" {% if tipo_propiedad and tipo_propiedad == 'indistinto' %}selected{% endif %}>Indistinto</option>
+                <option value="terreno" {% if tipo_propiedad and tipo_propiedad == 'terreno' %}selected{% endif %}>Terreno</option>
+                <option value="departamento" {% if tipo_propiedad and tipo_propiedad == 'departamento' %}selected{% endif %}>Departamento</option>
+                <option value="casa" {% if tipo_propiedad and tipo_propiedad == 'casa' %}selected{% endif %}>Casa</option>
+                <option value="quinta" {% if tipo_propiedad and tipo_propiedad == 'quinta' %}selected{% endif %}>Quinta</option>
+                <option value="deposito" {% if tipo_propiedad and tipo_propiedad == 'deposito' %}selected{% endif %}>Depósito</option>
+            </select>
+
+            <!-- Filtro por Rango de Precio -->
+            <div class="price-filter-group">
+                <div class="form-group-inline">
+                    <label for="precio_min">Precio Mínimo:</label>
+                    <input type="number" name="precio_min" id="precio_min" value="{{ precio_min_val if precio_min_val is not none else '' }}" placeholder="Mínimo" onchange="this.form.submit()">
+                </div>
+
+                <div class="form-group-inline">
+                    <label for="precio_max">Precio Máximo:</label>
+                    <input type="number" name="precio_max" id="precio_max" value="{{ precio_max_val if precio_max_val is not none else '' }}" placeholder="Máximo" onchange="this.form.submit()">
+                </div>
+
+                <div class="form-group-inline">
+                    <label for="moneda_filtro_id">Moneda del Filtro:</label>
+                    <select name="moneda_filtro_id" id="moneda_filtro_id" onchange="this.form.submit()">
+
+                    <option value="">Gs. (por defecto)</option> {# Moneda por defecto si no se selecciona otra #}
+                    {% for moneda_c in monedas_cotizacion %}
+                        {% if moneda_c.tipo_moneda and moneda_c.tipo_moneda.upper().strip().rstrip('.') != 'GS' %} {# Normaliza y compara para excluir Gs. #}
+                            <option value="{{ moneda_c.id }}" {% if moneda_filtro_id_selected and moneda_filtro_id_selected == moneda_c.id|string %}selected{% endif %}>
+                                {{ moneda_c.tipo_moneda }}
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Botón de limpiar filtro -->
+            <button type="submit" class="btn-filter-search">Buscar</button> <!-- El type="submit" es importante -->
+            <button type="button" onclick="window.location.href='/filtrar_propiedades'">Limpiar Filtro</button>        </form>
+    </section>
+
+
+    
+            <!-- Resultados de propiedades -->
+           <section class="properties">
+            {% if propiedades and propiedades|length > 0 %}
+                <div class="property-grid">
+                    {% for propiedad_item in propiedades %}
+                        <div class="property-card"
+                            data-ciudad-id="{{ propiedad_item.ciudad_id if propiedad_item.ciudad_id is not none else '' }}"
+                            data-departamento-id="{{ propiedad_item.departamento_id if propiedad_item.departamento_id is not none else '' }}"
+                            data-tipo-operacion="{{ propiedad_item.tipo_operacion|lower if propiedad_item.tipo_operacion else 'indistinto' }}"
+                            data-tipo-propiedad="{{ propiedad_item.tipo_propiedad|lower if propiedad_item.tipo_propiedad else 'indistinto' }}"
+                            data-price="{{ propiedad_item.precio_gs if propiedad_item.precio_gs is not none else '0' }}"
+                            data-moneda-id="{{ propiedad_item.moneda_id if propiedad_item.moneda_id is not none else '' }}"
+                        >
+                            <a href="{{ url_for('main.detalle_propiedad', id=propiedad_item.id) }}">
+                                <img src="{{ url_for('static', filename='Img-prop/' + (propiedad_item.imagen_cabecera if propiedad_item.imagen_cabecera else 'default.png')) }}" alt="{{ propiedad_item.titulo }}">
+                                <h3>{{ propiedad_item.titulo }}</h3>
+                               <p>{% if propiedad_item.precio_original is defined and propiedad_item.precio_original is not none %}
+                                        {{ propiedad_item.precio_original }}  {{ propiedad_item.moneda_original_tipo }}
+                                   {% else %}
+                                        Consultar precio
+                                    {% endif %}
+                                </p>                      
+                                <p><span class="property-city-info">{{ propiedad_item.ciudad_nombre }} ({{ propiedad_item.departamento_nombre }})</span></p>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="no-properties-message">No se encontraron propiedades disponibles con los filtros seleccionados.</p>
+            {% endif %}
+        </section>
+            <section class="property-list">
+                {% if propiedades and propiedades|length > 0 %}
+                    {% for propiedad_item in propiedades %}
+                    <div class="property-card"
+                         data-ciudad-id="{{ propiedad_item.ciudad_id if propiedad_item.ciudad_id is not none else '' }}"
+                         data-departamento-id="{{ propiedad_item.departamento_id if propiedad_item.departamento_id is not none else '' }}"
+                         data-tipo-operacion="{{ propiedad_item.tipo_operacion|lower if propiedad_item.tipo_operacion else 'indistinto' }}"
+                         data-tipo-propiedad="{{ propiedad_item.tipo_propiedad|lower if propiedad_item.tipo_propiedad else 'indistinto' }}"
+                         data-price="{{ propiedad_item.precio_gs if propiedad_item.precio_gs is not none else '0' }}"
+                         data-moneda-id="{{ propiedad_item.moneda_id if propiedad_item.moneda_id is not none else '' }}"
+                    >
+                        <img src="{{ url_for('static', filename='Img-prop/' + (propiedad_item.imagen_cabecera if propiedad_item.imagen_cabecera else 'default.png')) }}" alt="Imagen de {{ propiedad_item.titulo }}">
+                        <h3>{{ propiedad_item.titulo }}</h3>
+                        <pre class="formatted-description">{{ propiedad_item.descripcion }}</pre>
+                        <a href="{{ url_for('main.detalle_propiedad', id=propiedad_item.id) }}">Ver Detalles</a>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </section>
+        
+            <!-- Información de contacto -->
+            <section class="contact-info" id="contacto">
+                <h2>Contactos</h2>
+                <p>¿Tienes preguntas o deseas más información? Contáctanos a través de nuestros canales:</p>
+                <ul>
+                    <li class="contact-item">
+                        <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp Icon" class="contact-icon">
+                        <div class="contact-text">
+                            <strong>WhatsApp:</strong> <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank">Enviar mensaje</a>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram Icon" class="contact-icon">
+                        <div class="contact-text">
+                            <strong>Instagram:</strong> <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank">@irismar_florentin</a>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook Icon" class="contact-icon">
+                        <div class="contact-text">
+                            <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank">Irismar Propiedades</a>
+                        </div>
+                    </li>
+                    <li class="contact-item">
+                        <img src="{{ url_for('static', filename='iconos/gmail.png') }}" alt="Email Icon" class="contact-icon">
+                        
+                        <div class="contact-text">
+                            <strong>Correo Electrónico:</strong> <a href="mailto:irismar@prueba.com">irismar@prueba.com</a>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="container">
+                    <p>&copy; 2025 IrismMar. Todos los derechos reservados.</p>
+                </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

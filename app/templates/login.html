@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Irismar Propiedades</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="login-page">
+        <!-- Cabecera -->
+    <header class="navbar">
+        <div class="logo">
+            <a href="{{ url_for('main.filtrar_propiedades') }}">
+                <img src="{{ url_for('static', filename='/logoYM.png') }}" alt="Logo de la Empresa">
+            </a>
+        </div>
+        <nav>
+            <a href="{{ url_for('main.index') }}">Inicio</a>
+        </nav>
+    </header>
+
+    <!-- Iconos Sociales Fijos -->
+    <div class="social-icons-fixed">
+        <a href="https://wa.me/0983736525?text=Buenos%20d%C3%ADas%2C%20me%20gustar%C3%ADa%20mas%20informaci%C3%B3n%20sobre%20una%20propiedad." target="_blank" aria-label="WhatsApp">
+            <img src="{{ url_for('static', filename='iconos/wsp.jpg') }}" alt="WhatsApp">
+        </a>
+        <a href="https://www.instagram.com/irismar_florentin?igsh=MTIxcmtsYnBkcDVnOA==" target="_blank" aria-label="Instagram">
+            <img src="{{ url_for('static', filename='iconos/ig.jpg') }}" alt="Instagram">
+        </a>
+        <a href="https://www.facebook.com/share/1C1TkDZHjQ/" target="_blank" aria-label="Facebook">
+            <img src="{{ url_for('static', filename='iconos/fb.jpg') }}" alt="Facebook">
+        </a>
+    </div>
+
+    <!-- Contenedor de Login -->
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('main.iniciar_sesion') }}" method="POST" autocomplete="off">
+            <label for="nombre_usuario">Usuario:</label>
+            <input type="text" id="nombre_usuario" name="nombre_usuario" required autofocus>
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" required>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 IrismMar. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
